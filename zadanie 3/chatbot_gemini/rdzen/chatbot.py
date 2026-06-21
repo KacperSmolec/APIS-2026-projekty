@@ -111,13 +111,18 @@ class ChatbotGemini:
 
     def _wywolaj_model(self) -> str:
         """Wywołuje API Gemini z ponawianiem i mapuje błędy na własne wyjątki."""
+        # ThinkingConfig wspierają tylko modele z rodziny 2.5 — dla innych pomijamy.
+        thinking = (
+            types.ThinkingConfig(thinking_budget=self.ust.budzet_myslenia)
+            if "2.5" in self.ust.nazwa_modelu else None
+        )
         konfiguracja = types.GenerateContentConfig(
             system_instruction=self.ust.prompt_systemowy,
             temperature=self.ust.temperatura,
             top_p=self.ust.top_p,
             top_k=self.ust.top_k,
             max_output_tokens=self.ust.maks_tokenow_odpowiedzi,
-            thinking_config=types.ThinkingConfig(thinking_budget=self.ust.budzet_myslenia),
+            thinking_config=thinking,
         )
 
         ostatni_blad: Optional[Exception] = None

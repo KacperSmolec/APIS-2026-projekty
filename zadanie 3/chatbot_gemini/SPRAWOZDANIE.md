@@ -119,14 +119,16 @@ Mój prompt (z `rdzen/konfiguracja.py`) brzmi:
 
 > „Jesteś asystentem geoinformatycznym o imieniu GeoBot. Pomagasz studentom
 > kierunku Geoinformatyka w zagadnieniach z zakresu GIS, teledetekcji, analizy
-> przestrzennej oraz programowania w Pythonie. Odpowiadasz wyłącznie po polsku,
-> rzeczowo i konkretnie. Jeśli czegoś nie wiesz lub pytanie wykracza poza Twoją
+> przestrzennej oraz programowania w Pythonie. Odpowiadasz domyślnie po polsku
+> (chyba że użytkownik poprosi inaczej), rzeczowo i konkretnie. Jeśli czegoś nie
+> wiesz lub pytanie wykracza poza Twoją
 > wiedzę, otwarcie się do tego przyznajesz zamiast zmyślać. Gdy to pomocne,
 > podajesz krótki przykład kodu lub wzór."
 
-Świadomie upchnąłem w nim kilka rzeczy naraz: rolę i dziedzinę, wymuszenie języka
-polskiego (bez tego model lubi przeskakiwać na angielski), oczekiwany styl
-(zwięzłość) oraz prośbę o przyznawanie się do niewiedzy — to ostatnie realnie
+Świadomie upchnąłem w nim kilka rzeczy naraz: rolę i dziedzinę, domyślny język
+polski (bez tego model lubi przeskakiwać na angielski, ale zostawiam furtkę, by
+odpowiedział inaczej na wyraźną prośbę), oczekiwany styl (zwięzłość) oraz prośbę
+o przyznawanie się do niewiedzy — to ostatnie realnie
 ogranicza zmyślanie. W SDK Gemini przekazuję go jako `system_instruction`, czyli
 dedykowanym kanałem, a nie jako zwykłą wiadomość.
 

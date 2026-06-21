@@ -19,6 +19,7 @@ class Wiadomosc:
 
     rola: str  # "user" albo "model" (konwencja Gemini)
     tresc: str
+    tokeny: int = 0  # liczba tokenów treści, liczona raz przy dodaniu (cache)
 
 
 @dataclass
@@ -36,9 +37,16 @@ class HistoriaRozmowy:
     budzet_tokenow: int
     licznik_tokenow: Callable[[str], int]
     wiadomosci: list[Wiadomosc] = field(default_factory=list)
+    _tokeny_promptu: int = field(default=0, init=False)
+
+    def __post_init__(self) -> None:
+        # Prompt systemowy się nie zmienia — liczymy jego tokeny raz.
+        self._tokeny_promptu = self.licznik_tokenow(self.prompt_systemowy)
 
     def dodaj(self, rola: str, tresc: str) -> None:
-        self.wiadomosci.append(Wiadomosc(rola=rola, tresc=tresc))
+        # Tokeny treści liczymy jednorazowo przy dodaniu i zapamiętujemy,
+        # aby kontrola kontekstu nie wywoływała licznika (np. API) wielokrotnie.
+        self.wiadomosci.append(Wiadomosc(rola=rola, tresc=tresc, tokeny=self.licznik_tokenow(tresc)))
 
     def cofnij_ostatnia(self) -> None:
         """Usuwa ostatnią wiadomość — używane przy wycofywaniu po błędzie."""
@@ -46,11 +54,8 @@ class HistoriaRozmowy:
             self.wiadomosci.pop()
 
     def liczba_tokenow(self) -> int:
-        """Szacuje łączną liczbę tokenów: prompt systemowy + cały dialog."""
-        razem = self.licznik_tokenow(self.prompt_systemowy)
-        for w in self.wiadomosci:
-            razem += self.licznik_tokenow(w.tresc)
-        return razem
+        """Łączna liczba tokenów: prompt systemowy + cały dialog (z cache'u)."""
+        return self._tokeny_promptu + sum(w.tokeny for w in self.wiadomosci)
 
     def przytnij_do_budzetu(self) -> int:
         """Usuwa najstarsze wiadomości dialogu aż kontekst zmieści się w budżecie.
