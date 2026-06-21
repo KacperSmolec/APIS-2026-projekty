@@ -1,0 +1,11 @@
+# Chatbot geoinformatyczny — zależności
+# Python 3.9+
+
+# Oficjalne SDK Google do modeli Gemini (nowy, ujednolicony klient google-genai)
+google-genai>=1.0
+
+# Wczytywanie zmiennych środowiskowych z pliku .env
+python-dotenv>=1.0
+
+# Testy (opcjonalnie — testy działają też bez pytest)
+pytest>=8.0

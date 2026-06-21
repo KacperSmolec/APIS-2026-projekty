@@ -1,0 +1,28 @@
+# ===== Sekrety (NIGDY nie commitować) =====
+api_key.txt
+newsapi_key.txt
+kaggle.json
+.env
+*.env
+!.env.example
+
+# ===== Generowane / duże =====
+logi/
+indeks/
+raporty/
+dane/
+models/
+wyniki/
+*.faiss
+*.safetensors
+
+# ===== Python =====
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# ===== System =====
+.DS_Store

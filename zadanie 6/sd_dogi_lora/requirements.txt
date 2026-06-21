@@ -1,0 +1,12 @@
+# Dotrenowanie Stable Diffusion (LoRA) — zależności
+# Przeznaczone do uruchomienia w Google Colab z GPU (Python 3.10+).
+
+diffusers>=0.27        # Stable Diffusion + skrypty treningowe (LoRA, DreamBooth)
+transformers>=4.38     # CLIP text encoder, tokenizery
+accelerate>=0.27       # uruchamianie treningu (accelerate launch)
+peft>=0.10             # warstwy LoRA
+torch>=2.1             # backend (na Colab z CUDA)
+pillow>=10.0           # operacje na obrazach
+ftfy                   # czyszczenie tekstu (zależność CLIP)
+matplotlib>=3.7        # zestawienie wyników przed/po
+kaggle>=1.6            # pobranie zbioru Stanford Dogs

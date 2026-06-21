@@ -1,0 +1,15 @@
+# Zbudowany indeks (można odtworzyć z PDF-ów)
+indeks/
+
+# Sekrety
+.env
+api_key.txt
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# System
+.DS_Store

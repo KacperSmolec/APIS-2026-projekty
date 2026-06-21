@@ -1,0 +1,16 @@
+# Wygenerowane raporty
+raporty/
+
+# Sekrety
+.env
+api_key.txt
+newsapi_key.txt
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# System
+.DS_Store

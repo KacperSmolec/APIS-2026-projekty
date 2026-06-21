@@ -1,0 +1,12 @@
+# Agent newsowy — zależności
+# Python 3.9+
+
+google-genai>=1.0      # model LLM + function calling (Gemini)
+markdown>=3.4          # konwersja Markdown -> HTML
+xhtml2pdf>=0.2.11      # konwersja HTML -> PDF (raport)
+python-dotenv>=1.0     # konfiguracja z pliku .env
+
+pytest>=8.0            # testy (opcjonalnie)
+
+# NewsAPI nie wymaga osobnej biblioteki — używamy zwykłego HTTP (urllib).
+# Brak klucza NewsAPI = automatyczny fallback na kanał RSS Google News.

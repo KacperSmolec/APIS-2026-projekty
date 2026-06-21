@@ -1,0 +1,17 @@
+# Logi tworzone w trakcie działania
+logi/
+*.log
+
+# Sekrety
+.env
+api_key.txt
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+
+# System
+.DS_Store

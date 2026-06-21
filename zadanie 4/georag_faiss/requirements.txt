@@ -1,0 +1,10 @@
+# System RAG (FAISS + Gemini) — zależności
+# Python 3.9+
+
+google-genai>=1.0      # model LLM (Gemini) + embeddingi (gemini-embedding-001)
+faiss-cpu>=1.8         # baza wektorowa / wyszukiwanie najbliższych sąsiadów
+pypdf>=4.0             # wczytywanie i ekstrakcja tekstu z PDF
+numpy>=1.24            # operacje na wektorach
+python-dotenv>=1.0     # konfiguracja z pliku .env
+
+pytest>=8.0            # testy (opcjonalnie)
