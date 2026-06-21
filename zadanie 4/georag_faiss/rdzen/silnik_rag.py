@@ -24,6 +24,15 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(name)s | %(messa
 logger = logging.getLogger("rag.silnik")
 
 
+def _myslenie(model: str):
+    """Konfiguracja 'myślenia' tylko dla modeli z rodziny 2.5 (inne jej nie wspierają).
+
+    Dla generacji odpowiedzi RAG wyłączamy myślenie (przewidywalny koszt i pełna
+    kontrola nad długością odpowiedzi). Dla modeli spoza 2.5 zwracamy None.
+    """
+    return types.ThinkingConfig(thinking_budget=0) if "2.5" in model else None
+
+
 @dataclass
 class Odpowiedz:
     """Wynik zapytania do systemu RAG."""
@@ -94,7 +103,7 @@ class SilnikRAG:
             system_instruction=self.ust.prompt_systemowy,
             temperature=self.ust.temperatura,
             max_output_tokens=self.ust.maks_tokenow_odpowiedzi,
-            thinking_config=types.ThinkingConfig(thinking_budget=0),
+            thinking_config=_myslenie(self.ust.model_llm),
         )
         odp = self.klient.models.generate_content(
             model=self.ust.model_llm, contents=tresc, config=konfiguracja

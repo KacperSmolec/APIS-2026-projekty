@@ -31,7 +31,7 @@ PROMPT_SYSTEMOWY = (
     "1. Jeśli w kontekście nie ma odpowiedzi, napisz dokładnie: "
     "'Na podstawie dostarczonych publikacji nie potrafię odpowiedzieć na to pytanie.' "
     "Nie korzystaj z wiedzy spoza kontekstu i niczego nie zmyślaj.\n"
-    "2. Odpowiadaj rzeczowo, po polsku, w 2-5 zdaniach.\n"
+    "2. Odpowiadaj rzeczowo i zwięźle, po polsku — tak długo, jak wymaga tego pytanie.\n"
     "3. Na końcu odpowiedzi w nawiasie kwadratowym podaj numery wykorzystanych "
     "fragmentów, np. [1, 3]."
 )
