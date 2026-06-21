@@ -207,14 +207,14 @@ Uruchomienie całego potoku na realnych wiadomościach dało:
 ```
 >>> 1. szukaj_wiadomosci   -> pobrano dane (2960 znaków)
 >>> 2. podsumuj_wiadomosci ->
-   ## Najważniejsze wydarzenia
-   ### Planowanie i rozwój energetyki jądrowej w Polsce
-   * Strategiczny plan rozwoju: Polska aktualizuje swój strategiczny plan...
-   * Docelowa moc: Plan zakłada budowę dwóch elektrowni (9 GWe)...
->>> 3. ocen_istotnosc      -> wysoka
+   ## Energetyka Jądrowa w Polsce: Kluczowe Wydarzenia i Plany
+   ### Cele i Strategia
+   * Polska planuje budowę dwóch dużych elektrowni jądrowych...
+   * Docelowa moc ma znacząco zwiększyć krajowe moce wytwórcze...
+>>> 3. ocen_istotnosc      -> srednia
 >>> 4. zapisz_raport_pdf   ->
    Sukces: raport zapisany w pliku
-   raporty/2026-06-21_energetyka_j_drowa_w_polsce_wysoka.pdf
+   raporty/2026-06-21_energetyka_jadrowa_w_polsce_srednia.pdf
 ```
 
 Powstał prawdziwy plik PDF z nazwą w wymaganym formacie
@@ -225,8 +225,8 @@ oceną istotności.
 
 Wyniki oceniam dobrze. Podsumowania są spójne, rzeczowe i trzymają się danych z
 wyszukiwania — model łączy powtarzające się wątki zamiast je listować. Ocena
-istotności jest sensowna (plany budowy elektrowni jądrowych słusznie dostały
-„wysoka"). Nazewnictwo plików i formatowanie PDF działają poprawnie.
+istotności jest sensowna, a nazewnictwo plików (z transliteracją polskich znaków,
+np. „jądrowa" → „jadrowa") i formatowanie PDF działają poprawnie.
 
 Słabsze strony i wnioski praktyczne:
 - **Limity darmowego API.** Agent wykonuje kilka wywołań modelu na sesję, więc
@@ -235,8 +235,9 @@ Słabsze strony i wnioski praktyczne:
   osobnym budżetem. W zastosowaniu produkcyjnym potrzebny byłby płatny plan.
 - **Dobór modelu.** Lżejszy `flash-lite` bywa zawodny w wieloetapowej pętli (potrafi
   przerwać po pierwszym kroku), więc do agenta warto użyć pełnego modelu.
-- **Transliteracja w nazwie pliku.** Polskie znaki diakrytyczne są usuwane z nazwy
-  („jądrowa" → „j_drowa"); w przyszłości lepsza byłaby transliteracja (ą→a).
+- **NewsAPI jest anglocentryczne.** Dla tematów po polsku potrafi zwrócić zero
+  wyników — dlatego narzędzie wyszukiwania w takiej sytuacji automatycznie
+  przełącza się na kanał Google News RSS, który dobrze pokrywa polskie zapytania.
 
 ---
 

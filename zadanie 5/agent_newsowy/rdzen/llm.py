@@ -18,16 +18,12 @@ logger = logging.getLogger("agent.llm")
 
 
 def myslenie(model: str):
-    """Zwraca konfigurację 'myślenia' dla modeli z rodziny 2.5.
+    """Zwraca konfigurację 'myślenia' (wyłączonego) dla modeli z rodziny 2.5.
 
-    Dla pełnego modelu flash wyłączamy myślenie (przewidywalny koszt). Dla
-    słabszego wariantu '-lite' zostawiamy domyślne myślenie włączone (None),
-    bo pomaga mu planować wieloetapowe działania agenta. Starsze modele
-    (np. 2.0) nie wspierają ThinkingConfig — też zwracamy None.
+    Wyłączamy myślenie dla przewidywalnego kosztu i pełnej kontroli nad długością
+    odpowiedzi. Modele spoza rodziny 2.5 nie wspierają ThinkingConfig — None.
     """
-    if "2.5" in model and "lite" not in model:
-        return types.ThinkingConfig(thinking_budget=0)
-    return None
+    return types.ThinkingConfig(thinking_budget=0) if "2.5" in model else None
 
 
 def _czas_oczekiwania(komunikat: str, domyslny: int = 30) -> int:

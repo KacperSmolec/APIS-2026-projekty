@@ -47,9 +47,9 @@ def ustaw_kontekst(klient, ustawienia) -> None:
 def szukaj_wiadomosci(temat: str) -> str:
     """Wyszukuje najnowsze artykuły prasowe na zadany temat.
 
-    Użyj tego narzędzia jako PIERWSZEGO kroku, aby zebrać świeże informacje o
-    wybranym zagadnieniu. Korzysta z serwisu NewsAPI, a gdy brak klucza API —
-    z darmowego kanału Google News RSS.
+    Przydatne, gdy potrzebujesz świeżego materiału źródłowego o wybranym
+    zagadnieniu. Korzysta z serwisu NewsAPI, a gdy brak klucza API — z darmowego
+    kanału Google News RSS.
 
     Args:
         temat: Słowa kluczowe lub fraza do wyszukania (np. "sztuczna inteligencja").
@@ -63,9 +63,10 @@ def szukaj_wiadomosci(temat: str) -> str:
 
     if _UST and _UST.klucz_newsapi:
         artykuly = _newsapi(temat, liczba, _UST.klucz_newsapi)
-        if artykuly is not None:
+        if artykuly:   # niepusta lista wyników
             return json.dumps(artykuly, ensure_ascii=False)
-        logger.warning("NewsAPI nie powiodło się — przełączam na fallback RSS.")
+        # Brak wyników (np. NewsAPI jest anglocentryczne) lub błąd -> fallback RSS.
+        logger.warning("NewsAPI nie zwróciło wyników — przełączam na fallback RSS.")
 
     artykuly = _google_news_rss(temat, liczba)
     return json.dumps(artykuly, ensure_ascii=False)
@@ -124,9 +125,9 @@ def _google_news_rss(temat: str, liczba: int) -> list:
 def podsumuj_wiadomosci(dane_wiadomosci: str, temat: str) -> str:
     """Tworzy spójne, eksperckie podsumowanie na podstawie zebranych artykułów.
 
-    Użyj tego narzędzia PO zebraniu wiadomości. Nie zwraca listy artykułów, lecz
-    syntetyzuje je w jedną, uporządkowaną notatkę w formacie Markdown (nagłówki,
-    punkty). Łączy powtarzające się informacje w spójną narrację.
+    Przydatne, gdy masz już zebrane artykuły i chcesz je streścić. Nie zwraca
+    listy artykułów, lecz syntetyzuje je w jedną, uporządkowaną notatkę w formacie
+    Markdown (nagłówki, punkty). Łączy powtarzające się informacje w spójną narrację.
 
     Args:
         dane_wiadomosci: Tekst (np. JSON) z tytułami i opisami zebranych artykułów.
@@ -142,9 +143,8 @@ def podsumuj_wiadomosci(dane_wiadomosci: str, temat: str) -> str:
     instrukcja = (
         f"Jesteś analitykiem prasowym. Na podstawie poniższych artykułów o temacie "
         f"'{temat}' napisz zwięzłe, uporządkowane podsumowanie najważniejszych "
-        f"wydarzeń w formacie Markdown. Wymagania:\n"
-        f"- zacznij od nagłówka '## Najważniejsze wydarzenia',\n"
-        f"- pogrupuj informacje tematycznie, użyj wypunktowań,\n"
+        f"wydarzeń w formacie Markdown. Wskazówki:\n"
+        f"- uporządkuj treść nagłówkami i wypunktowaniami,\n"
         f"- łącz powtarzające się wątki, nie wymyślaj faktów spoza danych,\n"
         f"- pisz po polsku, rzeczowo.\n\n"
         f"DANE ŹRÓDŁOWE:\n{dane_wiadomosci}"
@@ -169,9 +169,9 @@ def podsumuj_wiadomosci(dane_wiadomosci: str, temat: str) -> str:
 def ocen_istotnosc(podsumowanie: str, temat: str) -> str:
     """Ocenia istotność zebranych informacji dla danej dziedziny.
 
-    Użyj tego narzędzia PO przygotowaniu podsumowania, aby przypisać poziom
-    istotności. Kryteria: czy wydarzenia są przełomowe/pilne, jak bardzo
-    dotyczą bezpośrednio tematu, czy są świeże i konkretne.
+    Przydatne, gdy chcesz przypisać zebranym informacjom poziom istotności.
+    Kryteria: czy wydarzenia są przełomowe/pilne, jak bardzo dotyczą bezpośrednio
+    tematu, czy są świeże i konkretne.
 
     Args:
         podsumowanie: Wcześniej przygotowane podsumowanie (Markdown).
@@ -214,8 +214,8 @@ def ocen_istotnosc(podsumowanie: str, temat: str) -> str:
 def zapisz_raport_pdf(tresc_markdown: str, temat: str, istotnosc: str) -> str:
     """Zapisuje gotowe podsumowanie jako sformatowany raport PDF.
 
-    Użyj tego narzędzia jako OSTATNIEGO kroku, gdy podsumowanie jest gotowe, a
-    istotność oceniona. Konwertuje Markdown -> HTML -> PDF. Nazwa pliku ma format
+    Przydatne, gdy podsumowanie jest gotowe i chcesz zapisać wynik na dysku.
+    Konwertuje Markdown -> HTML -> PDF. Nazwa pliku ma format
     <data>_<temat>_<istotnosc>.pdf.
 
     Args:
@@ -228,7 +228,10 @@ def zapisz_raport_pdf(tresc_markdown: str, temat: str, istotnosc: str) -> str:
     """
     logger.info("[narzędzie] zapisz_raport_pdf(temat=%r, istotnosc=%r)", temat, istotnosc)
     try:
-        bezpieczny_temat = re.sub(r"[^a-z0-9]+", "_", temat.lower()).strip("_")[:50] or "raport"
+        # Transliteracja polskich znaków, by nie gubić ich w nazwie pliku (ą->a itd.).
+        mapa_pl = str.maketrans("ąćęłńóśźż", "acelnoszz")
+        temat_ascii = temat.lower().translate(mapa_pl)
+        bezpieczny_temat = re.sub(r"[^a-z0-9]+", "_", temat_ascii).strip("_")[:50] or "raport"
         data = datetime.now().strftime("%Y-%m-%d")
         nazwa = f"{data}_{bezpieczny_temat}_{istotnosc.lower()}.pdf"
 
